@@ -58,4 +58,5 @@ export class RegisterComponent {
     this.hide.set(!this.hide());
     event.stopPropagation();
   }
+
 }
