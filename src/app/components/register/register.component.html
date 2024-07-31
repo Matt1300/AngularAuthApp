@@ -16,20 +16,20 @@
             </mat-form-field>
             <mat-form-field class="mat-50">
                 <mat-label>Password</mat-label>
-                <input matInput [type]="hide() ? 'password' : 'text'" placeholder="$aeFcw2" formControlName="password"
-                    type="password">
-                <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
-                    [attr.aria-pressed]="hide()">
-                    <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="$aeFcw2"
+                    formControlName="password" type="password">
+                <button mat-icon-button matSuffix (click)="clickEvent($event,'password')"
+                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                    <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
             </mat-form-field>
             <mat-form-field class="mat-50">
                 <mat-label>Confirm Password</mat-label>
-                <input matInput [type]="hide() ? 'password' : 'text'" placeholder="$PLACEHOLDER$"
+                <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" placeholder="$PLACEHOLDER$"
                     formControlName="confirmpassword" type="password">
-                <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
-                    [attr.aria-pressed]="hide()">
-                    <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <button mat-icon-button matSuffix (click)="clickEvent($event,'confirmPassword')"
+                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
+                    <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
             </mat-form-field>
             <mat-form-field class="mat-50">

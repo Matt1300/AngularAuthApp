@@ -15,13 +15,16 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RegisterComponent {
 
-  hide = signal(true);
+  hidePassword: boolean = true;
+  hideConfirmPassword: boolean = true;
   _response: any;
 
-  constructor(private builder: FormBuilder, private userService: UserService, private toaster: ToastrService, private router: Router) {
-
-  }
-
+  constructor(
+    private builder: FormBuilder,
+    private userService: UserService,
+    private toaster: ToastrService,
+    private router: Router
+  ) { }
 
   _registerForm = this.builder.group({
     username: this.builder.control('', Validators.compose([Validators.required, Validators.minLength(5)])),
@@ -44,7 +47,7 @@ export class RegisterComponent {
       };
       this.userService.UserRegistration(_obj).subscribe(data => {
         this._response = data;
-        if (this._response.responseCode == 0) {
+        if (this._response.responseCode == 200) {
           this.toaster.info('Validate OTP and complete the registration', 'Registration');
           this.router.navigateByUrl('/confirm-otp');
         } else {
@@ -54,8 +57,12 @@ export class RegisterComponent {
     }
   }
 
-  clickEvent(event: MouseEvent) {
-    this.hide.set(!this.hide());
+  clickEvent(event: MouseEvent, field: string) {
+    if (field === 'password') {
+      this.hidePassword = !this.hidePassword;
+    } else if (field === 'confirmPassword') {
+      this.hideConfirmPassword = !this.hideConfirmPassword;
+    }
     event.stopPropagation();
   }
 }
