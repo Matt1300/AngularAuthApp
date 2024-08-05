@@ -1,63 +1,73 @@
-import { Component, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, signal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../material.module';
 import { Router, RouterLink } from '@angular/router';
-import { UserRegistration } from '../../models/user-model';
+import { RegisterConfirm, UserRegistration } from '../../models/user-model';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, MaterialModule, RouterLink],
+  imports: [ReactiveFormsModule, MaterialModule, RouterLink, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
 
-  hidePassword: boolean = true;
-  hideConfirmPassword: boolean = true;
+  _registerForm: FormGroup = new FormGroup({});
+  hidePassword = true;
+  hideConfirmPassword = true;
   _response: any;
 
   constructor(
-    private builder: FormBuilder,
+    private fb: FormBuilder,
     private userService: UserService,
     private toaster: ToastrService,
     private router: Router
   ) { }
 
-  _registerForm = this.builder.group({
-    username: this.builder.control('', Validators.compose([Validators.required, Validators.minLength(5)])),
-    password: this.builder.control('', Validators.required),
-    confirmpassword: this.builder.control('', Validators.required),
-    name: this.builder.control('', Validators.required),
-    email: this.builder.control('', Validators.compose([Validators.required, Validators.email])),
-    phone: this.builder.control('', Validators.required)
-  });
+  ngOnInit(): void {
+    this._registerForm = this.fb.group({
+      username: ['', [Validators.required, Validators.minLength(5)]],
+      password: ['', Validators.required],
+      confirmpassword: ['', Validators.required],
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', Validators.required]
+    });
+  }
 
   proceedRegister() {
-    debugger
     if (this._registerForm.valid) {
-      let _obj: UserRegistration = {
-        userName: this._registerForm.value.username as string,
-        password: this._registerForm.value.password as string,
-        name: this._registerForm.value.name as string,
-        email: this._registerForm.value.email as string,
-        phone: this._registerForm.value.phone as string
-      };
-      this.userService.UserRegistration(_obj).subscribe(data => {
-        this._response = data;
-        if (this._response.responseCode == 200) {
-          this.toaster.info('Validate OTP and complete the registration', 'Registration');
-          this.router.navigateByUrl('/confirm-otp');
-        } else {
-          this.toaster.error('Failed due to:' + this._response.message, 'Registration Failed');
-        }
+      const { username, password, name, email, phone } = this._registerForm.value;
+      const userRegistration: UserRegistration = { userName: username, password, name, email, phone };
+
+      this.userService.UserRegistration(userRegistration).subscribe(data => {
+        this.handleRegistrationResponse(data, username);
       });
     }
   }
 
-  clickEvent(event: MouseEvent, field: string) {
+  private handleRegistrationResponse(response: any, username: string) {
+    this._response = response;
+    if (this._response.responseCode === 200) {
+      let _confirmObj: RegisterConfirm = {
+        userId: parseInt(this._response.result),
+        username: username,
+        otpText: ''
+      }
+      this.userService._registerResponse.set(_confirmObj);
+      this.toaster.info('Validate OTP and complete the registration', 'Registration');
+      this.router.navigateByUrl('/confirm-otp');
+    } else {
+      this.toaster.error('Failed due to:' + this._response.message, 'Registration Failed');
+    }
+  }
+
+  clickEvent(event: MouseEvent, field: string): void {
+    event.preventDefault();
     if (field === 'password') {
       this.hidePassword = !this.hidePassword;
     } else if (field === 'confirmPassword') {

@@ -9,36 +9,61 @@
             <mat-form-field>
                 <mat-label>Username</mat-label>
                 <input matInput placeholder="Chanchito Feliz" formControlName="username">
+                <mat-error *ngIf="_registerForm.get('username')?.hasError('required')">
+                    El username es requerido
+                </mat-error>
+                <mat-error *ngIf="_registerForm.get('username')?.hasError('minlength')">
+                    El username debe tener al menos 5 caracteres
+                </mat-error>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Name</mat-label>
                 <input matInput placeholder="Pedro" formControlName="name">
+                <mat-error *ngIf="_registerForm.get('name')?.hasError('required')">
+                    El nombre es requerido
+                </mat-error>
             </mat-form-field>
             <mat-form-field class="mat-50">
                 <mat-label>Password</mat-label>
                 <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="$aeFcw2"
-                    formControlName="password" type="password">
-                <button mat-icon-button matSuffix (click)="clickEvent($event,'password')"
-                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                    formControlName="password">
+                <button mat-icon-button matSuffix type="button" (click)="clickEvent($event, 'password')"
+                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword" style="color: #3c3c3c;">
                     <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
+                <mat-error *ngIf="_registerForm.get('password')?.hasError('required')">
+                    La contraseña es requerida
+                </mat-error>
             </mat-form-field>
             <mat-form-field class="mat-50">
                 <mat-label>Confirm Password</mat-label>
                 <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" placeholder="$PLACEHOLDER$"
-                    formControlName="confirmpassword" type="password">
-                <button mat-icon-button matSuffix (click)="clickEvent($event,'confirmPassword')"
-                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
+                    formControlName="confirmpassword">
+                <button mat-icon-button matSuffix (click)="clickEvent($event, 'confirmPassword')"
+                    [attr.aria-label]="'Hide password'" type="button" [attr.aria-pressed]="hideConfirmPassword"
+                    style="color: #3c3c3c;">
                     <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
+                <mat-error *ngIf="_registerForm.get('confirmpassword')?.hasError('required')">
+                    La confirmación de la contraseña es requerida
+                </mat-error>
             </mat-form-field>
             <mat-form-field class="mat-50">
                 <mat-label>Email</mat-label>
                 <input matInput placeholder="example@example.com" formControlName="email">
+                <mat-error *ngIf="_registerForm.get('email')?.hasError('required')">
+                    El email es requerido
+                </mat-error>
+                <mat-error *ngIf="_registerForm.get('email')?.hasError('email')">
+                    El email no es válido
+                </mat-error>
             </mat-form-field>
             <mat-form-field class="mat-50">
                 <mat-label>Phone</mat-label>
-                <input matInput placeholder="098367751" formControlName="phone" type="tel">
+                <input matInput placeholder="1234567890" formControlName="phone">
+                <mat-error *ngIf="_registerForm.get('phone')?.hasError('required')">
+                    El teléfono es requerido
+                </mat-error>
             </mat-form-field>
         </mat-card-content>
         <mat-card-actions>

@@ -1,1 +1,40 @@
-<p>appmenu works!</p>
+@if (showMenu) {
+<div>
+    <mat-toolbar color="primary" class="mat-elevation-z8">
+        <button mat-icon-button (click)="drawer.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <span>Access Management System</span>
+        <span class="example-spacer"></span>
+        <span>{{ loginUser }}</span>
+        <button mat-button [matMenuTriggerFor]="profile"><mat-icon>arrow_drop_down</mat-icon></button>
+        <mat-menu #profile>
+            <button mat-menu-item routerLink="/profile">Profile</button>
+            <button mat-menu-item routerLink="/reset-password">Reset Password</button>
+            <button mat-menu-item routerLink="/login">Logout</button>
+        </mat-menu>
+    </mat-toolbar>
+    <mat-drawer-container autosize>
+        <mat-drawer mode="side" opened="true" #drawer position="start">
+            <mat-nav-list>
+                <mat-list-item>
+                    <button mat-button routerLink="/"><mat-icon>home</mat-icon>Home</button>
+                </mat-list-item>
+                @for (item of menuList; track $index) {
+                <a mat-list-item routerLink="{{item.code}}" routerLinkActive="active">{{item.name}}</a>
+                }
+            </mat-nav-list>
+        </mat-drawer>
+        <mat-drawer-content>
+            <div style="text-align: center; height: 100vh;">
+                <router-outlet />
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>
+
+}@else {
+<div style="text-align: center; height: 100vh;">
+    <router-outlet />
+</div>
+}
