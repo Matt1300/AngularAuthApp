@@ -1,0 +1,15 @@
+
+.mat-mdc-card-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.mat-mdc-focus-indicator{
+    width: auto;
+}
+
+.action-button{
+    display: flex;
+    gap: 8px;
+}
+

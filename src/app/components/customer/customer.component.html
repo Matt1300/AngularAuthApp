@@ -1,1 +1,50 @@
-<p>customer works!</p>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Customer Listing</mat-card-title>
+        @if (_permission.haveadd) {
+        <button style="width: auto;" mat-raised-button color="primary" [routerLink]="['/customer/add']">Add
+            Customer</button>
+        }
+
+    </mat-card-header>
+    <mat-card-content>
+        <table mat-table [dataSource]="datasource">
+            <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef> Code </th>
+                <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef> Email </th>
+                <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+            </ng-container>
+            <ng-container matColumnDef="phone">
+                <th mat-header-cell *matHeaderCellDef> Phone </th>
+                <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+            </ng-container>
+            <ng-container matColumnDef="creditlimit">
+                <th mat-header-cell *matHeaderCellDef> Credit Limit </th>
+                <td mat-cell *matCellDef="let element"> {{element.creditlimit}} </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let element"> {{element.statusname}} </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td class="actions" mat-cell *matCellDef="let element">
+                    <div class="action-button">
+                        <button (click)="functionEdit(element.code)" mat-raised-button color="primary">Edit</button>
+                        <button (click)="functionDelete(element.code)" mat-raised-button color="warn">Delete</button>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </mat-card-content>
+</mat-card>

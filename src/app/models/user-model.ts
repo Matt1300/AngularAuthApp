@@ -37,4 +37,13 @@ export interface UpdatePassword {
     password: string;
     otpText: string;
 }
+export interface MenuPermission {
+    code: string;
+    name: string;
+    haveview: boolean;
+    haveadd: boolean;
+    haveedit: boolean;
+    havedelete: boolean;
+}
+
 

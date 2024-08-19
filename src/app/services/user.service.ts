@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { GenerateToken, LoginResponse, MenuByRol, RegisterConfirm, ResetPassword, UpdatePassword, UserRegistration } from '../models/user-model';
+import { GenerateToken, LoginResponse, MenuByRol, MenuPermission, RegisterConfirm, ResetPassword, UpdatePassword, UserRegistration } from '../models/user-model';
 import { Observable } from 'rxjs';
 import { ResponseAPI } from '../models/response-model';
 
@@ -52,5 +52,10 @@ export class UserService {
 
   UpdatePassword(data: UpdatePassword): Observable<ResponseAPI> {
     return this.http.post<ResponseAPI>(`${this.baseUrl}User/UpdatePassword`, data);
+  }
+
+  GetMenuPermission(rol: string, menu: string): Observable<MenuPermission> {
+    const params = new HttpParams().set('userRol', rol).set('menucode', menu);
+    return this.http.get<MenuPermission>(`${this.baseUrl}UserRol/GetMenuPermissionByRol`, { params });
   }
 }
